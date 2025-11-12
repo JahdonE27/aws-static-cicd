@@ -1,4 +1,5 @@
 name: Deploy static files to s3 bucket
+
 on:
   push:
     branches:
@@ -29,3 +30,8 @@ jobs:
       - name: Upload files to S3
         run: |
           aws s3 cp . s3://front-end.queensbot.com/ --recursive
+      - name: Invalidate CloudFront cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: E1MMYKOE2HESP9
+          PATHS: "/*"
